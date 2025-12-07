@@ -4,6 +4,7 @@ import random
 import asyncio
 import base64
 import mimetypes
+import re
 from collections import OrderedDict
 from typing import List
 
@@ -60,6 +61,13 @@ def save_file(filename, data):
     with open(filename, "w", encoding="utf-8") as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
 
+def trigger_matched(text: str, triggers: list[str]) -> bool:
+    text = text.lower()
+    for kw in triggers:
+        pattern = r"\b" + re.escape(kw.lower()) + r"\b"
+        if re.search(pattern, text):
+            return True
+    return False
 
 config = load_config()
 games = load_file(STATUS_FILE, [{"title": "Minecraft"}, {"title": "Half-Life 2"}])
@@ -395,7 +403,7 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    if message.author == bot.user or not message.guild:
+    if message.author.bot or not message.guild:
         return
 
     image_data_urls = []
@@ -427,7 +435,7 @@ async def on_message(message):
         original_content = replied_message.content
         user_content = message.content.replace(f"<@{bot.user.id}>", "").strip()
 
-        if bot.user.mentioned_in(message) or any(kw in message.content.lower() for kw in TRIGGER_KEYWORDS):
+        if bot.user.mentioned_in(message) or trigger_matched(message.content, TRIGGER_KEYWORDS)
             async with message.channel.typing():
                 if original_author.id == bot.user.id:
                     update_memory(
@@ -458,7 +466,7 @@ async def on_message(message):
                 update_memory(str(message.author.id), message.author.display_name, response, "assistant")
             return
 
-    elif any(kw in message.content.lower() for kw in TRIGGER_KEYWORDS):
+    elif trigger_matched(message.content, TRIGGER_KEYWORDS)
         async with message.channel.typing():
             update_memory(
                 str(message.author.id),
