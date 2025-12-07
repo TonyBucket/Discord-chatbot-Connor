@@ -1,4 +1,4 @@
-# [![English](https://img.shields.io/badge/lang-English-green)](README_EN.md)
+# English here! [![English](https://img.shields.io/badge/lang-English-green)](README_EN.md)
 # 🤖 Discord Chatbot (based trên source code của Connor) 
 *(phiên bản “plug-n-play”, đọc xong chạy liền, lỗi ráng chịu 😭)*
 
