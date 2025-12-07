@@ -1,10 +1,10 @@
-# Discord Chatbot (Plug-and-Play)
+# Discord Chatbot (Based on "Connor chatbot")
 
 A simple, all-in-one Discord AI chatbot that streams OpenAI responses, remembers short chat history, and supports image attachments. Edit one config file, drop your keys into `.env`, and run.
 
 ## Features
 - Mention/keyword triggered replies with short-term memory
-- Streaming OpenAI responses (text + images)
+- Streaming OpenAI responses (text + images) (currently not compatible with OpenAI Response API)
 - Rotating game status from `games.json`
 - Memory purge slash command
 
