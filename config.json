@@ -1,0 +1,7 @@
+{
+    "trigger_keywords": [],
+    "admin_ids": [],
+    "system_prompt": "",
+    "model_name": "gpt-4o",
+    "api_endpoint": "https://api.openai.com/v1/chat/completions"
+}
