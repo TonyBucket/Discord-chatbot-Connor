@@ -405,6 +405,8 @@ async def on_ready():
 async def on_message(message):
     if message.author.bot or not message.guild:
         return
+    if message.mention_everyone or message.role_mentions:
+        return
 
     image_data_urls = []
     image_descriptions = []
