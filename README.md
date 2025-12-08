@@ -24,7 +24,7 @@ rồi chạy **python bot.py** là done, đi nhậu tiếp 🍻.
 
 ---
 
-## ⚙️ Setup (dễ hơn cài Minecraft shader)
+## ⚙️ Setup (dễ hơn 5 bước gọt mít)
 ### 1. Cài dependency
 ```bash
 pip install -r requirements.txt
@@ -41,7 +41,6 @@ Có thể override thêm (không bắt buộc):
 ```env
 MODEL_NAME=
 API_ENDPOINT=
-SYSTEM_PROMPT=
 TRIGGER_KEYWORDS=
 ADMIN_IDS=
 ```
@@ -49,13 +48,28 @@ ADMIN_IDS=
 *(điền sai thì bot tự tin chết, đừng hỏi 😭)*
 
 ### 3. Chỉnh `config.json`
-- `trigger_keywords`: từ khoá bot tự rep không cần ping  
+- `trigger_keywords`: từ khoá bot tự rep không cần ping **(ĐÂY LA BẮT BUỘC, NẾU KHÔNG BOT SẼ REPLY BẤT KÌ TIN NHẮN NÀO)**
 - `admin_ids`: ID mấy ông nội được phép xoá memory người khác  
-- `system_prompt`: tính cách bot  
 - `model_name`: model OpenAI  
 - `api_endpoint`: endpoint API (dùng local LLM vẫn được)
 
-### 4. Chạy bot
+### 4. Chỉnh prompt bot
+Từ giờ **bot dùng file** `system_prompt.txt` để mô tả tính cách.
+Chỉ cần tạo file:
+```bash
+system_prompt.txt
+```
+và viết prompt vào đó, ví dụ:
+```txt
+Bạn tên là connor. TonyBucket là bố của bạn
+36 36 36 36 36 36 36 36 36 36 36 36 36
+67
+```
+Nếu **không có file này**, bot sẽ fallback sang:
+- `SYSTEM_PROMPT` trong `.env`
+- hoặc `"system_prompt"` trong `config.json`
+
+### 5. Chạy bot
 ```bash
 python bot.py
 ```
@@ -67,7 +81,8 @@ Nếu bot rep loạn → blame model, đừng blame t.
 
 ## 📁 File trong repo
 - **bot.py** – linh hồn của bot  
-- **config.json** – nơi chỉnh behavior  
+- **config.json** – nơi chỉnh behavior
+- **system_prompt.txt** – prompt riêng của bot (ưu tiên cao nhất)
 - **.env.example** – template token/API  
 - **games.json** – list status  
 - **chat_memory.json** – memory 6 dòng  
