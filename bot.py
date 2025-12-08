@@ -87,8 +87,17 @@ ADMIN_USER_IDS = config["admin_ids"]
 OPENAI_API_URL = config["api_endpoint"]
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 MODEL_NAME = config["model_name"]
-SYSTEM_PROMPT = config["system_prompt"]
 TRIGGER_KEYWORDS = config["trigger_keywords"]
+SYSTEM_PROMPT = ""
+
+if os.path.exists("system_prompt.txt"):
+    try:
+        with open("system_prompt.txt", "r", encoding="utf-8") as f:
+            SYSTEM_PROMPT = f.read()
+    except:
+        SYSTEM_PROMPT = ""
+else:
+    SYSTEM_PROMPT = config.get("system_prompt", "")
 
 # Simple in-memory cache for image data URLs to avoid re-encoding frequently
 IMAGE_CACHE = OrderedDict()
