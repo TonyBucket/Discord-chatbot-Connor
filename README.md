@@ -20,7 +20,7 @@ rồi chạy **python bot.py** là done, đi nhậu tiếp 🍻.
 - 🧽 Slash command `/purgememory` để reset khi bot lú
 
 > Đây là bản Việt hoá funni.  
-> Bug phát sinh = *“tự chịu trách nhiệm trước bàn phím của bạn”* 🐋
+> Bug phát sinh = *“tự chịu trách nhiệm trước bàn phím của bạn”* 🦭
 
 ---
 
@@ -83,4 +83,4 @@ Bot này hoạt động theo triết lý:
 > If it breaks, it’s your fault.”**
 
 Dùng để vui, không dùng để cứu thế giới AI 🌏  
-Chúc mấy tml xài bot vui vẻ 🐋💙
+Chúc mấy tml xài bot vui vẻ 🦭💙
