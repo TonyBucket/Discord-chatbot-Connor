@@ -446,7 +446,7 @@ async def on_message(message):
         original_content = replied_message.content
         user_content = message.content.replace(f"<@{bot.user.id}>", "").strip()
 
-        if bot.user.mentioned_in(message) or trigger_matched(message.content, TRIGGER_KEYWORDS)
+        if bot.user.mentioned_in(message) or trigger_matched(message.content, TRIGGER_KEYWORDS):
             async with message.channel.typing():
                 if original_author.id == bot.user.id:
                     update_memory(
@@ -477,7 +477,7 @@ async def on_message(message):
                 update_memory(str(message.author.id), message.author.display_name, response, "assistant")
             return
 
-    elif trigger_matched(message.content, TRIGGER_KEYWORDS)
+    elif trigger_matched(message.content, TRIGGER_KEYWORDS):
         async with message.channel.typing():
             update_memory(
                 str(message.author.id),
