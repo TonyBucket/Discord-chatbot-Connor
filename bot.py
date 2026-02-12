@@ -181,7 +181,59 @@ def update_memory(user_id, username, message, role):
         chat_memory[user_id]["messages"].pop(0)
 
     save_file(MEMORY_FILE, chat_memory)
+# ---------------------------- 
+# Sanitizer (to be compatible with the new llama.cpp)      
+# ----------------------------                                                                       
+def sanitize_messages(messages):
+    """
+    Hàm này đảm bảo:
+    1. Không bao giờ có 2 role giống nhau đứng cạnh nhau (merge content lại).
+    2. Message đầu tiên sau System PHẢI là User (nếu là Assistant thì xóa).
+    """
+    if not messages:
+        return []
 
+    sanitized = []
+    
+    # Tách system ra (nếu có)
+    has_system = messages[0]["role"] == "system"
+    start_index = 1 if has_system else 0
+    
+    if has_system:
+        sanitized.append(messages[0])
+
+    # Xử lý phần còn lại
+    temp_messages = messages[start_index:]
+    
+    # Bỏ qua các tin nhắn Assistant ở đầu (nếu bị cắt mất User tương ứng)
+    while temp_messages and temp_messages[0]["role"] == "assistant":
+        temp_messages.pop(0)
+
+    for msg in temp_messages:
+        if not sanitized:
+            sanitized.append(msg)
+            continue
+
+        last_msg = sanitized[-1]
+
+        # Nếu role trùng nhau -> Merge content
+        if last_msg["role"] == msg["role"]:
+            # Xử lý content cũ (có thể là list hoặc str)
+            old_content = last_msg["content"]
+            new_content = msg["content"]
+            
+            # Đưa hết về string để merge cho dễ (trừ khi m muốn xử lý list ảnh phức tạp)
+            # Ở đây t giả định text simple, nếu có image payload phức tạp thì logic merge sẽ dài hơn
+            # Nhưng với code hiện tại của m thì merge text là chủ yếu.
+            
+            str_old = old_content if isinstance(old_content, str) else str(old_content)
+            str_new = new_content if isinstance(new_content, str) else str(new_content)
+            
+            last_msg["content"] = f"{str_old}\n\n{str_new}"
+        else:
+            sanitized.append(msg)
+            
+    return sanitized
 
 # ----------------------------
 # OpenAI streaming response
@@ -221,10 +273,11 @@ async def chat_response_stream(prompt, author_name, channel, image_data_urls=Non
         user_payload.append({"type": "text", "text": f"{author_name} sent an empty message."})
 
     messages.append({"role": "user", "content": user_payload})
+    final_messages = sanitize_messages(messages)
 
     payload = {
         "model": MODEL_NAME,
-        "messages": messages,
+        "messages": final_messages,
         "max_tokens": 4096,
         "stream": True
     }
