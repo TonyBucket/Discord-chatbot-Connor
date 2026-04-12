@@ -279,7 +279,9 @@ async def chat_response_stream(prompt, author_name, channel, image_data_urls=Non
         "model": MODEL_NAME,
         "messages": final_messages,
         "max_tokens": 4096,
-        "stream": True
+        "stream": True,
+        "user": str(prompt.author.id),
+        "user_display_name": f"{prompt.author.display_name} ({prompt.author.name})"
     }
 
     headers = {
